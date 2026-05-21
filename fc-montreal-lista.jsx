@@ -100,11 +100,13 @@
 
       async function load() {
         try {
-          const pm = await window.storage.get(PLAYERS_KEY + "_main", true);
+          const pm = await window.storage.get(PLAYERS_KEY + "_main");
           if (pm) setMainPlayers(JSON.parse(pm.value));
-          const pw = await window.storage.get(PLAYERS_KEY + "_wait", true);
+          
+          const pw = await window.storage.get(PLAYERS_KEY + "_wait");
           if (pw) setWaitPlayers(JSON.parse(pw.value));
-          const g = await window.storage.get(GAME_KEY, true);
+          
+          const g = await window.storage.get(GAME_KEY);
           if (g) {
             const v = JSON.parse(g.value);
             setGameInfo(v);
@@ -115,17 +117,17 @@
       }
 
       async function saveMain(list) {
-        await window.storage.set(PLAYERS_KEY + "_main", JSON.stringify(list), true);
+        await window.storage.set(PLAYERS_KEY + "_main", JSON.stringify(list));
         setMainPlayers(list);
       }
 
       async function saveWait(list) {
-        await window.storage.set(PLAYERS_KEY + "_wait", JSON.stringify(list), true);
+        await window.storage.set(PLAYERS_KEY + "_wait", JSON.stringify(list));
         setWaitPlayers(list);
       }
 
       async function saveGame(info) {
-        await window.storage.set(GAME_KEY, JSON.stringify(info), true);
+        await window.storage.set(GAME_KEY, JSON.stringify(info));
         setGameInfo(info);
       }
 
@@ -203,6 +205,7 @@
         window.open(`https://wa.me/?text=${encodeURIComponent(buildShareText())}`, "_blank");
       }
 
+      []
       function buildShareText() {
         let t = `⚽ *PRESENCE LIST*\n📅 ${gameInfo.date} — ${gameInfo.time}\n📍 ${gameInfo.location}\n\n`;
         t += `1. Luciano 🟢\n`;
@@ -278,7 +281,7 @@
               </div>
             </div>
 
-            {/* LIST TARGET TOGGLE (Recuperado aqui!) */}
+            {/* LIST TARGET TOGGLE */}
             <div style={{ display:"flex", gap:8, marginBottom:14 }}>
               {["main","wait"].map(t => {
                 const isMain = t === "main";
@@ -336,7 +339,6 @@
                 ✅ Main List
               </h2>
               <div style={{ display:"grid", gap:4 }}>
-                {/* Slot 1 — Luciano (fixed) */}
                 <div style={{ ...S.card(false), background:"#0d2e18", border:"1px solid #166534" }}>
                   <span style={S.num}>01</span>
                   <span style={{ flex:1, color:"#4ade80", fontWeight:700 }}>Luciano</span>
