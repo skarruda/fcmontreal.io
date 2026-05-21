@@ -402,4 +402,74 @@
               <div style={{ display:"flex", gap:8, marginTop:8 }}>
                 <input type="password" value={adminInput}
                   onChange={e => setAdminInput(e.target.value)}
-                  onKeyDown
+                  onKeyDown={e => e.key==="Enter" && handleAdminLogin()}
+                  placeholder="Password…"
+                  style={{ ...S.input, flex:1, width:"auto", padding:"10px 12px" }}
+                />
+                <button onClick={handleAdminLogin} style={{
+                  background:"#1e5228", border:"none", borderRadius:8,
+                  padding:"10px 16px", color:"#4ade80", fontWeight:700, cursor:"pointer", fontFamily:"inherit",
+                }}>Enter</button>
+              </div>
+            )}
+
+            {/* ADMIN PANEL */}
+            {adminOpen && adminAuth && (
+              <div style={{ marginTop:8, background:"#0a1f0d", border:"1px solid #1e5228", borderRadius:12, padding:16 }}>
+                <p style={{ margin:"0 0 12px", color:"#4ade80", fontSize:13, fontWeight:700 }}>Admin Panel</p>
+                <div style={{ display:"grid", gap:8, marginBottom:12 }}>
+                  {[["date","📅 Date"], ["time","🕗 Time"], ["location","📍 Location"]].map(([k,label]) => (
+                    <div key={k}>
+                      <label style={{ fontSize:11, color:"#4a7c59", display:"block", marginBottom:4 }}>{label}</label>
+                      <input value={editGame[k]}
+                        onChange={e => setEditGame({ ...editGame, [k]:e.target.value })}
+                        style={{ ...S.input, padding:"8px 10px", fontSize:13 }}
+                      />
+                    </div>
+                  ))}
+                </div>
+
+                <div style={{ display:"flex", gap:8, marginBottom:16 }}>
+                  <button onClick={handleSaveGame} style={{
+                    flex:1, background:"#14532d", border:"none", borderRadius:8,
+                    padding:10, color:"#4ade80", fontWeight:700, cursor:"pointer", fontFamily:"inherit", fontSize:13,
+                  }}>Save Info</button>
+                  <button onClick={handleReset} style={{
+                    flex:1, background:"#450a0a", border:"1px solid #7f1d1d", borderRadius:8,
+                    padding:10, color:"#f87171", fontWeight:700, cursor:"pointer", fontFamily:"inherit", fontSize:13,
+                  }}>🗑 Reset List</button>
+                </div>
+
+                {/* ADMIN ACTIONS */}
+                <div style={{ borderTop:"1px solid #1e5228", paddingTop:16, marginTop:16 }}>
+                  <p style={{ color:"#4ade80", fontSize:12, marginBottom:10, fontWeight:700 }}>Admin Actions</p>
+                  <button onClick={shareWhatsApp} style={{
+                    width:"100%", background:"linear-gradient(135deg,#128c7e,#25d366)", border:"none",
+                    borderRadius:12, padding:14, color:"#fff", fontWeight:800, fontSize:15,
+                    cursor:"pointer", fontFamily:"inherit", letterSpacing:0.5,
+                  }}>
+                    📲 Send list to WhatsApp group
+                  </button>
+                </div>
+              </div>
+            )}
+
+            <p style={{ textAlign:"center", color:"#1e5228", fontSize:11, marginTop:32 }}>
+              FC Montreal · Shared real-time list
+            </p>
+          </div>
+
+          <style>{`
+            * { box-sizing:border-box; }
+            input::placeholder { color:#2d6a35; }
+            button:disabled { opacity:0.5; }
+          `}</style>
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
+</html>
