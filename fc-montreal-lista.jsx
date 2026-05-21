@@ -166,9 +166,25 @@
         inputRef.current?.focus();
       }
 
+      // NOVA LÓGICA: Puxa o próximo jogador da lista de espera automaticamente
       async function handleRemoveMain(id) {
-        await saveMain(mainPlayers.filter(p => p.id !== id));
-        showToast("Player removed.", "info");
+        let updatedMain = mainPlayers.filter(p => p.id !== id);
+        let updatedWait = [...waitPlayers];
+
+        if (updatedWait.length > 0) {
+          // Remove o primeiro da fila de espera
+          const nextPlayer = updatedWait.shift(); 
+          // Adiciona ele no final da lista principal
+          updatedMain.push(nextPlayer); 
+          
+          await saveMain(updatedMain);
+          await saveWait(updatedWait);
+          showToast(`Player removed. 🔄 ${nextPlayer.name} moved to Main List!`, "info");
+        } else {
+          // Se não houver ninguém na espera, apenas remove o jogador
+          await saveMain(updatedMain);
+          showToast("Player removed.", "info");
+        }
       }
 
       async function handleRemoveWait(id) {
@@ -205,7 +221,6 @@
         window.open(`https://wa.me/?text=${encodeURIComponent(buildShareText())}`, "_blank");
       }
 
-      []
       function buildShareText() {
         let t = `⚽ *PRESENCE LIST*\n📅 ${gameInfo.date} — ${gameInfo.time}\n📍 ${gameInfo.location}\n\n`;
         t += `1. Luciano 🟢\n`;
